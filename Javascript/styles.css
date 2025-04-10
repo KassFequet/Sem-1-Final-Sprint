@@ -47,16 +47,16 @@ nav {
 /* The nav section will contain 2 divs. */
 
 .navleft {
-  width: 493px;
+  width: 497px;
   height: 45px;
-  background-color: orange;
+  background-color: rgb(230, 199, 230);
   float: left;
 }
 
 .navright {
-  width: 495px;
+  width: 497px;
   height: 45px;
-  background-color: orange;
+  background-color: rgb(230, 199, 230);
   margin-left: 5px;
   float: right;
 }
@@ -64,9 +64,10 @@ nav {
 .progress-container {
   width: 100%;
   height: 5px;
-  background-color: #e0e0e0;
+  background-color: lightgray;
   position: relative;
   margin-top: 10px;
+  border: 1px solid grey;
 }
 
 .progress-bar {
