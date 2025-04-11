@@ -86,7 +86,7 @@ nav a:hover {
   float: right;
 }
 
-.navright .progress-container {
+.navright .progresscontainer {
   width: 300px;
   height: 15px;
   background-color: lightgray;
@@ -95,7 +95,7 @@ nav a:hover {
   border: 3px solid purple;
 }
 
-.navright .progress-bar {
+.navright .progressbar {
   height: 100%;
   background-color: rgb(116, 84, 116);
   transition: width 0.3s ease;
@@ -132,12 +132,51 @@ main {
 .mainbottomleft {
   width: 490px;
   height: 300px;
-  background-color: lightseagreen;
+  background-color: rgb(136, 158, 218);
   border: 1px solid black;
   padding: 10px;
   margin: 5px;
   float: left;
+  text-align: center;
 }
+
+.mainbottomleft h2 {
+  font-size: 19pt;
+  font-weight: bold;
+  color: black;
+}
+
+.mainbottomleft ul {
+  list-style-type: none;
+}
+
+.mainbottomleft li {
+  margin-bottom: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  color: rgb(24, 25, 77);
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.mainbottomleft li:hover {
+  color: black;
+}
+
+#leftsong,
+#rightsong {
+  width: 220px;
+  height: 150px;
+  padding-top: 10px;
+  float: left;
+}
+
+#nowPlaying {
+  margin-bottom: 15px;
+  font-size: 16pt;
+  font-weight: bold;
+}
+
 footer {
   width: 1000px;
   height: 80px;
