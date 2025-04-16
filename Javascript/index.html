@@ -2,18 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    />
 
     <!-- Always set up the title and link to
          the style sheet up front. -->
     <title>Front-end Developer Kit</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="styles.css"
+    />
     <script src="index.js"></script>
   </head>
   <body>
     <div class="mainbox">
       <header>
         <div class="tophead"></div>
+        <img
+          src="Images/Taxi 1.jpg"
+          id="ImgSlide"
+          width="1000px"
+          height="160px"
+        />
       </header>
 
       <nav>
@@ -26,7 +38,10 @@
         </div>
         <div class="navright">
           <div class="progresscontainer">
-            <div class="progressbar" id="progressBar"></div>
+            <div
+              class="progressbar"
+              id="progressBar"
+            ></div>
           </div>
         </div>
       </nav>
@@ -34,7 +49,16 @@
       <main>
         <div class="maintopleft"></div>
 
-        <div class="mainright"></div>
+        <div class="mainright">
+          <button
+            id="btnLoanButton"
+            onclick="LoanButton();"
+          >
+            Loan Analysis
+          </button>
+
+          <p id="LoanButton"></p>
+        </div>
 
         <div class="mainbottomleft">
           <!--Kass-->
@@ -54,7 +78,10 @@
           </ul>
 
           <div id="nowPlaying">Now Playing: None</div>
-          <audio id="audioPlayer" controls></audio>
+          <audio
+            id="audioPlayer"
+            controls
+          ></audio>
         </div>
       </main>
 
