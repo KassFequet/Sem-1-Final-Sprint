@@ -159,10 +159,10 @@ while True:
     # Progress bar for saving the rental information
     print()
     print("Saving rental information...")
-    progress_bar_length = 50
-    for i in range(progress_bar_length + 1):
-        percent = (i / progress_bar_length) * 100
-        bar = "█" * i + "░" * (progress_bar_length - i)
+    ProgressBarLength = 50
+    for i in range(ProgressBarLength + 1):
+        percent = (i / ProgressBarLength) * 100
+        bar = "█" * i + "░" * (ProgressBarLength - i)
         print(f"\r{bar} {percent:.0f}%", end="")
         time.sleep(0.05)
     print()
