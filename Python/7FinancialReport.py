@@ -1,6 +1,6 @@
 # Description: Driver Financial Listing Report
 # Author: Kass Fequet
-# Date(s): April 10/24
+# Date(s): April 10/25 - April 17/25
 
 # Define required libraries.
 import datetime as DT
@@ -37,8 +37,7 @@ for XRecord in f:
     # The following line reads the first record in the file and creates a list.
     XLst = XRecord.split(",")
 
-    # Now grab the values from the list and assign to variables.
-    # You may not need all the fields.
+    # Grab the values from the list and assign to variables.
     TransNum = int(XLst[0].strip())
     EmpNum = int(XLst[1].strip())
     MonthStandFee = float(XLst[2].strip())
@@ -46,13 +45,26 @@ for XRecord in f:
     WeekRentFee = float(XLst[4].strip())
     HST = float(XLst[5].strip())
 
+# Check if today is the first day of the month for monthly stand fees
+today = DT.date.today()
+if today.day == 1:
+    with open("Revenue.dat", "a") as f:
+        StandFeeTransNum = TransNum
+        TransNum += 1
 
+        StandFeeHSTAmt = MonthStandFee * HST
+        StandFeeTotal = MonthStandFee + StandFeeHSTAmt
+
+        f.write(
+            f"{StandFeeTransNum}, {today}, Monthly Stand Fees, {EmpNum}, {MonthStandFee:.2f}, {StandFeeHSTAmt:.2f}, {StandFeeTotal:.2f}\n"
+        )
 
 # Main program starts here.
 while True:
     # Gather user inputs for employee details and report dates.
 
     while True:
+        print()
         EmpName = input("Enter the employee name:                                          ").title()
         if EmpName == "":
             print()
@@ -105,8 +117,8 @@ while True:
     while True:
         print()
         
-        TransNumLst.append(TransNum)  # Add the current transaction number to the list
-        TransNum += 1  # Increment the transaction number for the next transaction
+        TransNumLst.append(TransNum)
+        TransNum += 1
 
         # Transaction Date
         while True:
@@ -158,6 +170,12 @@ while True:
         HSTAmtLst.append(HSTAmt)
         TotalLst.append(Total)
 
+        # Save the transaction details to FinancialReport.dat
+        with open("FinancialReport.dat", "a") as f:
+            f.write(
+                f"{TransNum}, {TransDate}, {Desc}, {Subtotal:.2f}, {HSTAmt:.2f}, {Total:.2f}\n"
+            )
+
         # Ask if the user wants to input another transaction
         print()
         Continue = input("Would you like to input another transaction? (Y/N):               ").upper()
@@ -190,11 +208,11 @@ while True:
     print()
 
 
-    break  # Exit the main loop after displaying results
+    break
 
 # Any housekeeping duties at the end of the program
 
 # Save updated defaults to Defaults.dat
 f = open("Defaults.dat", "w")
-f.write(f"{TransNum}, {EmpNum}, {MonthStandFee}, {DayRentFee}, {WeekRentFee}, {HST}\n")  # Write all values on the same line, separated by commas
-f.close()  # Close the file after writing
+f.write(f"{TransNum}, {EmpNum}, {MonthStandFee}, {DayRentFee}, {WeekRentFee}, {HST}\n")
+f.close()

@@ -1,112 +1,84 @@
 # Description: Track Car Rentals
 # Author: Kass Fequet
-# Date(s): April 14/24
+# Date(s): April 14/25 - April 17/25
 
 # Define required libraries.
 import datetime as DT
 import FormatValues as FV
 import os
 from datetime import datetime, timedelta
+import time
 
 # Define program constants.
 
 #Define program functions.
 
-# Function to check if a car is occupied
-def is_car_occupied(car_num):
-    car_file = f"Car{car_num}.dat"
-    if os.path.exists(car_file):
-        with open(car_file, "r") as file:
-            for line in file:
-                # Check if the car has an active rental
-                return True  # Assume occupied if there's any data
-    return False
-
 # Function to check if a car is occupied for the given rental period
-def is_car_occupied(car_num, start_date, num_days):
-    car_file = f"Car{car_num}.dat"
-    if not os.path.exists(car_file):
-        return False  # If the file doesn't exist, the car is not occupied
+def IsCarOccupied(CarNum, StartDate=None, NumDays=None):
+    CarFile = f"Car{CarNum}.dat"
+    if not os.path.exists(CarFile):
+        return False
+
+    if StartDate is None or NumDays is None:
+        with open(CarFile, "r") as file:
+            for line in file:
+                return True
+        return False
 
     # Calculate the rental period
-    rental_dates = set(
-        (start_date + timedelta(days=i)).strftime("%Y-%m-%d")
-        for i in range(num_days)
+    RentalDates = set(
+        (StartDate + timedelta(days=i)).strftime("%Y-%m-%d")
+        for i in range(NumDays)
     )
 
     # Check for conflicts in the car's file
-    with open(car_file, "r") as file:
-        for line in file:
-            # Assume the file format is: RentalID, StartDate, RentalDur, NumDays, RentCost, HSTRate, Total
-            _, existing_start_date, _, existing_num_days, *_ = line.strip().split(", ")
-            existing_start_date = datetime.strptime(existing_start_date, "%Y-%m-%d").date()
-            existing_num_days = int(existing_num_days)
+    with open(CarFile, "r") as f:
+        for XRecord in f:
+            _, ExistingStartDate, _, ExistingNumDays, *_ = XRecord.strip().split(", ")
+            ExistingStartDate = datetime.strptime(ExistingStartDate, "%Y-%m-%d").date()
+            ExistingNumDays = int(ExistingNumDays)
 
-            # Calculate the existing rental period
-            existing_rental_dates = set(
-                (existing_start_date + timedelta(days=i)).strftime("%Y-%m-%d")
-                for i in range(existing_num_days)
+            ExistingRentalDates = set(
+                (ExistingStartDate + timedelta(days=i)).strftime("%Y-%m-%d")
+                for i in range(ExistingNumDays)
             )
+            
+            if RentalDates & ExistingRentalDates:
+                return True
+    return False
 
-            # Check for overlap
-            if rental_dates & existing_rental_dates:
-                return True  # Conflict found
+# Open the Defaults.dat file and read the values
+with open("Defaults.dat", "r") as f:
+    for XRecord in f:
+        XLst = XRecord.split(",")
+        TransNum = int(XLst[0].strip())
+        EmpNum = int(XLst[1].strip())
+        MonthStandFee = float(XLst[2].strip())
+        DayRentFee = float(XLst[3].strip())
+        WeekRentFee = float(XLst[4].strip())
+        HST = float(XLst[5].strip())
 
-    return False  # No conflict
+# Check if today is the first day of the month for monthly stand fees
+today = DT.date.today()
+if today.day == 1:
+    with open("Revenue.dat", "a") as f:
+        StandFeeTransNum = TransNum
+        TransNum += 1
 
-# Open the data file.
-f = open("Defaults.dat", "r")
+        StandFeeHSTAmt = MonthStandFee * HST
+        StandFeeTotal = MonthStandFee + StandFeeHSTAmt
 
-# Initialize variables to store default values
-NextTransNum = 0
-TransID = 0
-EmpNum = 0
-HST = 0.0
+        f.write(
+            f"{StandFeeTransNum}, {today}, Monthly Stand Fees, {EmpNum}, {MonthStandFee:.2f}, {StandFeeHSTAmt:.2f}, {StandFeeTotal:.2f}\n"
+        )
 
-
-# Define data storage lists.
-
-
-# Open the data file.
-f = open("Defaults.dat", "r")
-
-# Process each line (record) in the file in a loop.
-for XRecord in f:
-
-    # The following line reads the first record in the file and creates a list.
-    XLst = XRecord.split(",")
-
-    # Now grab the values from the list and assign to variables.
-    # You may not need all the fields.
-    TransNum = int(XLst[0].strip())
-    EmpNum = int(XLst[1].strip())
-    MonthStandFee = float(XLst[2].strip())
-    DayRentFee = float(XLst[3].strip())
-    WeekRentFee = float(XLst[4].strip())
-    HST = float(XLst[5].strip())
-    
-    
-
-
-
-# Open the Rentals.dat file in append mode to save rental information
-rentals_file = open("Rentals.dat", "a")
-
-# Main program starts here.
+# Main program starts here
 while True:
-    # Gather user inputs for employee details and report dates.
+    RentalID = TransNum  # Assign the Rental ID from the transaction number
 
     while True:
-        RentalID = input("Enter the rental ID: ")
-        if RentalID == "":
-            print()
-            print("   Data Entry Error - Rental ID cannot be blank.")
-            print()
-        else:
-            break
-
-    while True:
-        StartDate = input("Enter the start date of the rental (YYYY-MM-DD): ")
+        print()
+        StartDate = input("Enter the start date of the rental (YYYY-MM-DD):  ")
         if StartDate == "":
             print()
             print("   Data Entry Error - Start date cannot be blank.")
@@ -126,40 +98,24 @@ while True:
                 print()
 
     while True:
-        CarNum = input("Enter the car number (1, 2, 3, or 4): ")
-        if CarNum == "":
-            print()
-            print("   Data Entry Error - Car number cannot be blank.")
-            print()
-        elif CarNum not in ["1", "2", "3", "4"]:
-            print()
-            print("   Data Entry Error - Car number must be 1, 2, 3, or 4.")
-            print()
-        elif is_car_occupied(CarNum, StartDate, NumDays):
-            print()
-            print(f"   Car {CarNum} is currently occupied. Please choose another car.")
-            print()
-        else:
-            break
-
-    while True:
         RentalDur = input("Enter if the rental is for a day or a week (D/W): ").upper()
         if RentalDur == "":
             print()
             print("   Data Entry Error - Rental duration cannot be blank.")
             print()
-        elif RentalDur not in ["D", "W"]:
+        elif RentalDur != "D" and RentalDur != "W":
             print()
             print("   Data Entry Error - Rental duration must be D or W.")
             print()
         elif RentalDur == "W":
             RentalDur = "Week"
             NumDays = 7
+            RentCost = WeekRentFee
             break
         elif RentalDur == "D":
             RentalDur = "Day"
             while True:
-                NumDays = input("Enter the number of days the car is rented for: ")
+                NumDays = input("Enter the number of days the car is rented for:   ")
                 if NumDays == "":
                     print()
                     print("   Data Entry Error - Number of days cannot be blank.")
@@ -170,48 +126,66 @@ while True:
                     print()
                 else:
                     NumDays = int(NumDays)
+                    RentCost = DayRentFee * NumDays
                     break
             break
 
     while True:
-        RentCost = input("Enter the rental cost: ")
-        if RentCost == "":
+        CarNum = input("Enter the car number (1, 2, 3, or 4):             ")
+        if CarNum == "":
             print()
-            print("   Data Entry Error - Rental cost cannot be blank.")
+            print("   Data Entry Error - Car number cannot be blank.")
             print()
-        elif not RentCost.replace('.', '', 1).isdigit():
+        elif CarNum != "1" and CarNum != "2" and CarNum != "3" and CarNum != "4":
             print()
-            print("   Data Entry Error - Rental cost must be a number.")
+            print("   Data Entry Error - Car number must be 1, 2, 3, or 4.")
+            print()
+        elif IsCarOccupied(CarNum, StartDate, NumDays):
+            print()
+            print(f"   Car {CarNum} is currently occupied for the selected dates. Please choose another car.")
             print()
         else:
-            RentCost = float(RentCost)
             break
 
+    # Calculate HST and Total
     HSTRate = RentCost * HST
     Total = RentCost + HSTRate
 
     # Save the rental information to the specific car file
-    car_file = f"Car{CarNum}.dat"
-    with open(car_file, "a") as file:
+    CarFile = f"Car{CarNum}.dat"
+    with open(CarFile, "a") as file:
         file.write(f"{RentalID}, {StartDate}, {RentalDur}, {NumDays}, {RentCost:.2f}, {HSTRate:.2f}, {Total:.2f}\n")
 
-    print(f"\nRental saved: RentalID={RentalID}, StartDate={StartDate}, CarNum={CarNum}, RentalDur={RentalDur}, NumDays={NumDays}, RentCost={RentCost:.2f}, HST={HSTRate:.2f}, Total={Total:.2f}\n")
+    # Progress bar for saving the rental information
+    print()
+    print("Saving rental information...")
+    progress_bar_length = 50  # Length of the progress bar
+    for i in range(progress_bar_length + 1):
+        percent = (i / progress_bar_length) * 100
+        bar = "█" * i + "░" * (progress_bar_length - i)
+        print(f"\r{bar} {percent:.0f}%", end="")
+        time.sleep(0.05)  # Simulate saving time
+    print()
+    print(f"Rental information saved successfully!")
+    print()
+    print(f"Start Date: {StartDate}, Car Number: {CarNum}, Rental Duration: {RentalDur}, Number of Days: {NumDays}, Rental Cost: {FV.FDollar2(RentCost)}, HST: {FV.FDollar2(HSTRate)}, Total: {FV.FDollar2(Total)}")
 
+    # Increment the transaction number for the next rental
+    TransNum += 1
+
+    # Ask if the user wants to input another transaction
+    print()
     Continue = input("Would you like to input another transaction? (Y/N): ").upper()
-    if Continue == "N":
+    if Continue != "Y":
+        print()
+        print(f"   Thank you for using the Car Rental System. Goodbye!")
+        print()
         break
-    elif Continue != "Y":
+    elif Continue != "N" and Continue != "Y":
         print()
         print("   Data Entry Error - Please enter Y or N.")
         print()
 
-# Close the Rentals.dat file
-rentals_file.close()
-
-# Any housekeeping duties at the end of the program
-
 # Save updated defaults to Defaults.dat
-f = open("Defaults.dat", "w")
-
-f.write(f"{TransNum}, {EmpNum}, {MonthStandFee}, {DayRentFee}, {WeekRentFee}, {HST}\n")  # Write all values on the same line, separated by commas
-f.close()  # Close the file after writing
+with open("Defaults.dat", "w") as f:
+    f.write(f"{TransNum}, {EmpNum}, {MonthStandFee}, {DayRentFee}, {WeekRentFee}, {HST}\n")
