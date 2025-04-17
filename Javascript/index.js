@@ -1,6 +1,6 @@
-// Desc:
-// Author:
-// Dates:
+// Desc: Javascript for the HAB Taxi services
+// Author: Kass, Stephen & Leah
+// Dates: April 10/2025 - April 18/2025
 
 var $ = function (id) {
   return document.getElementById(id);
@@ -40,7 +40,6 @@ window.addEventListener("scroll", function () {
 });
 
 //Function that creates an audio player for the page
-
 // Identify audio player, collects tracks and sets up for listening.
 document.addEventListener("DOMContentLoaded", function () {
   const audioPlayer = document.getElementById("audioPlayer");
@@ -65,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+//Function for footer copyright year
 // Update year element with the current year
 document.addEventListener("DOMContentLoaded", function () {
   const yearElement = document.getElementById("year");
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
   yearElement.textContent = currentYear;
 });
 
-// Scroll to top button functionality
+//Function for  footer back to top button
 document.addEventListener("DOMContentLoaded", function () {
   const scrollToTopButton = document.getElementById("scrollToTop");
 
