@@ -199,7 +199,31 @@ main {
 
 footer {
   width: 1000px;
-  height: 80px;
+  height: 200px;
   background-color: black;
   border-top: 3px solid gray;
+}
+
+.centerfooter {
+  width: 200px;
+  height: 175px;
+  margin-right: 400px;
+  margin-left: 400px;
+}
+footer img {
+  width: 150px;
+  height: 125px;
+  margin-left: 25px;
+}
+
+footer h1 {
+  float: left;
+  color: rgb(255, 210, 61);
+  text-align: center;
+}
+
+footer p {
+  color: grey;
+  text-align: left;
+  font-size: 8pt;
 }
