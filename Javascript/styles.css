@@ -7,13 +7,12 @@
 }
 
 body {
-  background-color: aquamarine;
+  background-color: white;
 }
 
 .mainbox {
   width: 1006px;
-  /* height: 600px; will be removed later */
-  background-color: white;
+  background-color: lightslategrey;
   border: 3px solid gray;
   margin: auto;
   margin-top: 20px;
@@ -47,9 +46,7 @@ nav {
   position: sticky;
   top: 0;
 }
-
-/* The nav section will contain 2 divs. */
-
+/* navleft contains the links*/
 .navleft {
   width: 497px;
   height: 45px;
@@ -77,6 +74,7 @@ nav a:hover {
   font-weight: bold;
 }
 
+/* navright contains a progress bar to shown how far the user has scrolled down*/
 .navright {
   width: 497px;
   height: 45px;
@@ -95,14 +93,14 @@ nav a:hover {
 
 .navright .progressbar {
   height: 100%;
-  background-color: darkgrey;
+  background-color: rgb(114, 113, 113);
   transition: width 0.3s ease;
 }
 
 main {
   width: 1000px;
   height: 625px;
-  background-color: lightyellow;
+  background-color: lightslategrey;
 }
 
 /* The main section will contain 3 divs. */
@@ -147,7 +145,7 @@ main {
 .loantable .righttext {
   text-align: right;
 }
-
+/* main bottom left section*/
 .mainbottomleft {
   width: 490px;
   height: 300px;
@@ -197,6 +195,8 @@ main {
   font-weight: bold;
 }
 
+/* footer section */
+
 footer {
   width: 1000px;
   height: 200px;
@@ -215,24 +215,20 @@ footer {
   width: 150px;
   height: 125px;
   margin-left: 25px;
+  float: left;
 }
 
-footer h1 {
+.centerfooter h1 {
   float: left;
   color: rgb(255, 210, 61);
   text-align: center;
-}
-
-footer p {
-  color: grey;
-  text-align: left;
-  font-size: 8pt;
 }
 
 .footerbottomleft {
   height: 25px;
   width: 500px;
   float: left;
+  margin-top: 11px;
   padding-left: 5px;
 }
 
@@ -243,9 +239,35 @@ footer p {
   padding-right: 5px;
 }
 
+.footerbottomleft  p {
+  color: grey;
+  text-align: left;
+  font-size: 8pt;
+}
+
 .footerbottomright img {
   width: 25px;
   height: 25px;
   float: right;
-  margin-left: 5px;
+  margin-left: 7px;
+}
+
+#scrollToTop {
+  background-color:  rgb(255, 210, 61);
+  color: black;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  float: right;
+  margin-right: 10px;
+}
+
+#scrollToTop:hover {
+  background-color: rgb(255, 255, 255);
+}
+
+#year {
+  font-size: 8pt;
 }
