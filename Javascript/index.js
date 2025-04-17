@@ -65,6 +65,22 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// Update year element with the current year
+document.addEventListener("DOMContentLoaded", function () {
+  const yearElement = document.getElementById("year");
+  const currentYear = new Date().getFullYear();
+  yearElement.textContent = currentYear;
+});
+
+// Scroll to top button functionality
+document.addEventListener("DOMContentLoaded", function () {
+  const scrollToTopButton = document.getElementById("scrollToTop");
+
+  scrollToTopButton.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+
 // Constants for Loan
 
 const INT_RATE = 0.052;
