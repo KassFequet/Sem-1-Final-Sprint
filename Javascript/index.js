@@ -203,3 +203,35 @@ function LoanButton() {
   document.getElementById("LoanButton").innerHTML = output;
   // I was having trouble with the table overriding the page and not printing as a table, innerHTML and the table as a string updates the content of the page without having to reload or navigate away
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const now = new Date();
+  const hour = now.getHours();
+ 
+  let greeting = "";
+  if (hour >= 5 && hour < 12) {greeting = "Good Morning";}
+  else if (hour >= 12 && hour < 16) {greeting = "Good Afternoon";}
+  else if (hour >= 16 && hour < 20) {greeting = "Good Evening";}
+  else {greeting = "Good Night";}
+ 
+  const quotes = [
+    "Road work ahead? Uh, yeah I sure hope it does.",
+    "Life is a highway.",
+    "Keep on truckin'!",
+    "They see me rollin', they hatin'.",
+    "The highway's callin', I gotta go."
+  ];
+ 
+  const randQuote = quotes[Math.floor(Math.random() * quotes.length)];
+ 
+  const formattedDate = now.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+ 
+  document.getElementById("greeting").textContent = greeting;
+  document.getElementById("quote").textContent = `"${randQuote}"`;
+  document.getElementById("date").textContent = formattedDate;
+ });
+ 
