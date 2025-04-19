@@ -48,25 +48,24 @@
 
       <main>
         <!--Leah-->
+        <!-- Story button and form area -->
         <div class="maintopleft">
-          <div>
-            <button id="tellStoryBtn">Tell Me a Story</button>
-          </div>
-          
-          <div id="madLibs" style="display: none; margin-top: 20px;">
+          <button id="tellStoryBtn">Tell Me a Story</button>
+        
+          <div id="madLibsForm" style="display: none; margin-top: 20px;">
             <h3>Fill in the blanks:</h3>
             <label>Name: <input type="text" id="nameInput" /></label><br />
             <label>Place: <input type="text" id="placeInput" /></label><br />
             <label>Verb (past tense): <input type="text" id="verbOneInput" /></label><br />
             <label>Verb (past tense): <input type="text" id="verbTwoInput" /></label><br />
-            <label>Adjective: <input type="text" id="adjectiveOneInput" /></label><br /><br />
+            <label>Adjective: <input type="text" id="adjectiveOneInput" /></label><br />
             <label>Adjective: <input type="text" id="adjectiveTwoInput" /></label><br /><br />
             <button id="generateStoryBtn">Generate Story</button>
           </div>
-          
-          <div id="madLibs" style="display: none; margin-top: 20px; font-style: italic;"></div>
+        
+          <!-- Where the final story will appear -->
+          <div id="madLibStory" style="display: none; margin-top: 20px; font-style: italic;"></div>
         </div>
-
         <div class="mainright">
           <!--Stephen-->
           <button id="btnLoanButton" onclick="LoanButton();">

@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
  });
 
 
- document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
   const tellMeStoryBtn = document.getElementById("tellStoryBtn");
   const madLibsForm = document.getElementById("madLibsForm");
   const generateStoryBtn = document.getElementById("generateStoryBtn");
@@ -257,16 +257,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const verbTwo = document.getElementById("verbTwoInput").value || "zoomed";
     const adjectiveOne = document.getElementById("adjectiveOneInput").value || "wild";
     const adjectiveTwo = document.getElementById("adjectiveTwoInput").value || "exciting";
-
+  
     const stories = [
       `${name} had the desire to go somewhere new… ${place}! ${name} ${verbOne} into the ${adjectiveOne} HAB Cab and ${verbTwo} the road. What a(n) ${adjectiveTwo} trip!`,
       `One ${adjectiveOne} night, ${name} had a ${adjectiveTwo} dream… they ${verbOne} into a HAB Cab headed to ${place}. It was magical! They ${verbTwo} with joy!`,
       `${name} took their ${adjectiveOne} HAB Cab and ${verbOne} across ${place}. Every mile was more ${adjectiveTwo} than the last. Eventually, they ${verbTwo} into the sunset.`
     ];
-
+  
     const randomIndex = Math.floor(Math.random() * stories.length);
     const story = stories[randomIndex];
-
+  
+    // Hide the form
+    madLibsForm.style.display = "none";
+  
+    // Show the story
     storyBox.textContent = story;
     storyBox.style.display = "block";
   });
