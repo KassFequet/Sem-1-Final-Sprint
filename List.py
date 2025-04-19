@@ -1,15 +1,14 @@
 # Description: Robot Group 3 Python Code
 
 import sys
-import datetime as DT
+
+import datetime as datetime
 import FormatValues as FV
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import time
 from random import randint
 import pandas as pd
-
-
 
 # Functions
 
@@ -90,73 +89,73 @@ def AddEmployee():
         write_defaults(defaults)
 
     # Main function
-    def __main__():
-        defaults = read_defaults()
-        employee_data = new_employee_input(defaults)
-        employee_record(defaults, *employee_data)
+    defaults = read_defaults()
+    employee_data = new_employee_input(defaults)
+    employee_record(defaults, *employee_data)
 
 # Kassaundra
 # Function to check if a car is occupied for the given rental period
-def IsCarOccupied(CarNum, StartDate=None, NumDays=None):
-    CarFile = f"Car{CarNum}.dat"
-    if not os.path.exists(CarFile):
-        return False
+def CarRent():
+    def IsCarOccupied(CarNum, StartDate=None, NumDays=None):
+        CarFile = f"Car{CarNum}.dat"
+        if not os.path.exists(CarFile):
+            return False
 
-    if StartDate is None or NumDays is None:
-        with open(CarFile, "r") as file:
-            for line in file:
-                return True
-        return False
+        if StartDate is None or NumDays is None:
+            with open(CarFile, "r") as file:
+                for line in file:
+                    return True
+            return False
 
-    # Calculate the rental period
-    RentalDates = set(
-        (StartDate + timedelta(days=i)).strftime("%Y-%m-%d")
-        for i in range(NumDays)
-    )
-
-    # Check for conflicts in the car's file
-    with open(CarFile, "r") as f:
-        for XRecord in f:
-            _, ExistingStartDate, _, ExistingNumDays, *_ = XRecord.strip().split(", ")
-            ExistingStartDate = datetime.strptime(ExistingStartDate, "%Y-%m-%d").date()
-            ExistingNumDays = int(ExistingNumDays)
-
-            ExistingRentalDates = set(
-                (ExistingStartDate + timedelta(days=i)).strftime("%Y-%m-%d")
-                for i in range(ExistingNumDays)
-            )
-            
-            if RentalDates & ExistingRentalDates:
-                return True
-    return False
-
-# Open the Defaults.dat file and read the values
-with open("Defaults.dat", "r") as f:
-    for XRecord in f:
-        XLst = XRecord.split(",")
-        TransNum = int(XLst[0].strip())
-        EmpNum = int(XLst[1].strip())
-        MonthStandFee = float(XLst[2].strip())
-        DayRentFee = float(XLst[3].strip())
-        WeekRentFee = float(XLst[4].strip())
-        HST = float(XLst[5].strip())
-
-# Check if today is the first day of the month for monthly stand fees
-today = DT.date.today()
-if today.day == 1:
-    with open("Revenue.dat", "a") as f:
-        StandFeeTransNum = TransNum
-        TransNum += 1
-
-        StandFeeHSTAmt = MonthStandFee * HST
-        StandFeeTotal = MonthStandFee + StandFeeHSTAmt
-
-        f.write(
-            f"{StandFeeTransNum}, {today}, Monthly Stand Fees, {EmpNum}, {MonthStandFee:.2f}, {StandFeeHSTAmt:.2f}, {StandFeeTotal:.2f}\n"
+        # Calculate the rental period
+        RentalDates = set(
+            (StartDate + timedelta(days=i)).strftime("%Y-%m-%d")
+            for i in range(NumDays)
         )
 
-# Main program starts here
-def CarRental():
+        # Check for conflicts in the car's file
+        with open(CarFile, "r") as f:
+            for XRecord in f:
+                _, ExistingStartDate, _, ExistingNumDays, *_ = XRecord.strip().split(", ")
+                ExistingStartDate = datetime.strptime(ExistingStartDate, "%Y-%m-%d").date()
+                ExistingNumDays = int(ExistingNumDays)
+
+                ExistingRentalDates = set(
+                    (ExistingStartDate + timedelta(days=i)).strftime("%Y-%m-%d")
+                    for i in range(ExistingNumDays)
+                )
+                
+                if RentalDates & ExistingRentalDates:
+                    return True
+        return False
+
+    # Open the Defaults.dat file and read the values
+    with open("Defaults.dat", "r") as f:
+        for XRecord in f:
+            XLst = XRecord.split(",")
+            TransNum = int(XLst[0].strip())
+            EmpNum = int(XLst[1].strip())
+            MonthStandFee = float(XLst[2].strip())
+            DayRentFee = float(XLst[3].strip())
+            WeekRentFee = float(XLst[4].strip())
+            HST = float(XLst[5].strip())
+
+    # Check if today is the first day of the month for monthly stand fees
+    today = datetime.date.today()
+    if today.day == 1:
+        with open("Revenue.dat", "a") as f:
+            StandFeeTransNum = TransNum
+            TransNum += 1
+
+            StandFeeHSTAmt = MonthStandFee * HST
+            StandFeeTotal = MonthStandFee + StandFeeHSTAmt
+
+            f.write(
+                f"{StandFeeTransNum}, {today}, Monthly Stand Fees, {EmpNum}, {MonthStandFee:.2f}, {StandFeeHSTAmt:.2f}, {StandFeeTotal:.2f}\n"
+            )
+
+    # Main program starts here
+
     while True:
         RentalID = TransNum  # Assign the Rental ID from the transaction number
 
@@ -169,8 +168,8 @@ def CarRental():
                 print()
             else:
                 try:
-                    StartDate = DT.datetime.strptime(StartDate, "%Y-%m-%d").date()
-                    if StartDate > DT.date.today():
+                    StartDate = datetime.strptime(StartDate, "%Y-%m-%d").date()
+                    if StartDate > datetime.date.today():
                         print()
                         print("   Data Entry Error - Start date cannot be in the future.")
                         print()
@@ -289,11 +288,6 @@ def EmployeePayment():
                 "HSTRate": float(parts[5])
             }
 
-    def write_defaults(defaults):
-        with open("Defaults.dat", "w") as file:
-            line = f'{defaults["NextTransaction"]},{defaults["NextDriverID"]},{defaults["MonthlyStandFee"]},{defaults["DailyRentalFee"]},{defaults["WeeklyRentalFee"]},{defaults["HSTRate"]}\n'
-            file.write(line)
-
     def employee_payment():
         defaults = read_defaults()
         payment_id = randint(100000,999999)
@@ -325,12 +319,14 @@ def EmployeePayment():
 
         print(f"\nPayment of ${total_amount:.2f} recorded for Driver #{driver_number} (Payment ID: {payment_id})")
 
+        return driver_number, total_amount
+
     def update_employee_balance(defaults, driver_number, total_amount):
 
         file_path = "employees.csv"
 
         if not os.path.exists(file_path):
-            print("Employees.csv file not found.")
+            print("employees.csv file not found.")
             return
 
         df = pd.read_csv(file_path)
@@ -341,21 +337,21 @@ def EmployeePayment():
             return
 
         # Update balance in employees.csv df
-        df.loc[df["EmployeeNumber"] == int(driver_number), "BalanceDue"] += total_amount
+        if total_amount > (df.loc[df["EmployeeNumber"] == int(driver_number), "BalanceDue"]):
+            df.loc[df["EmployeeNumber"] == int(driver_number), "BalanceDue"] -= total_amount
 
         # Write df change to filepath
         df.to_csv(file_path, index=False)
 
-    def __main__():
-        read_defaults()
-        employee_payment()
-        update_employee_balance()
+    defaults = read_defaults()
+    driver_number, total_amount = employee_payment()
+    update_employee_balance(defaults, driver_number, total_amount)
 
 # Stephen
 def RevenueTable():
 
     # Constants
-    CUR_DATE = datetime.datetime.now()
+    CUR_DATE = datetime.now()
         # Format date here real quick
     CUR_DATE = CUR_DATE.strftime("%B %d, %Y")
 
@@ -382,7 +378,7 @@ def RevenueTable():
             else:
                 try:
                     # Converts to string object and verifies date format
-                    StartDateObj = datetime.datetime.strptime(StartDate, "%Y-%m-%d")
+                    StartDateObj = datetime.strptime(StartDate, "%Y-%m-%d")
                     break
                 except ValueError:
                     print()
@@ -402,7 +398,7 @@ def RevenueTable():
             else:
                 try:
                     # Converts to string object and verifies date format
-                    EndDateObj = datetime.datetime.strptime(EndDate, "%Y-%m-%d")
+                    EndDateObj = datetime.strptime(EndDate, "%Y-%m-%d")
                     break
                 except ValueError:
                     print()
@@ -483,7 +479,7 @@ def RevenueTable():
 
     # Display the report
     print()
-    print(f"HAB Taxi Services           Current Date: {CUR_DATE.strftime('%Y-%m-%d')}")
+    print(f"HAB Taxi Services       Current Date: {CUR_DATE}")
     print(f"-" * 52)
     print(f"Start Date      End Date        Revenue     Expenses")
     print(f"-" * 52)
@@ -551,7 +547,7 @@ def FinancialReport():
         HST = float(XLst[5].strip())
 
     # Check if today is the first day of the month for monthly stand fees
-    today = DT.date.today()
+    today = date.today()
     if today.day == 1:
         with open("Revenue.dat", "a") as f:
             StandFeeTransNum = TransNum
@@ -586,8 +582,8 @@ def FinancialReport():
                 print()
             else:
                 try:
-                    StartDate = DT.datetime.strptime(StartDate, "%Y-%m-%d").date()
-                    if StartDate > DT.date.today():
+                    StartDate = datetime.strptime(StartDate, "%Y-%m-%d").date()
+                    if StartDate > date.today():
                         print()
                         print("   Data Entry Error - Start date cannot be in the future.")
                         print()
@@ -606,7 +602,7 @@ def FinancialReport():
                 print()
             else:
                 try:
-                    EndDate = DT.datetime.strptime(EndDate, "%Y-%m-%d").date()
+                    EndDate = datetime.strptime(EndDate, "%Y-%m-%d").date()
                     if EndDate < StartDate:
                         print()
                         print("   Data Entry Error - End date cannot be earlier than start date.")
@@ -629,7 +625,7 @@ def FinancialReport():
             while True:
                 TransDate = input("Enter the transaction date (YYYY-MM-DD):                          ")
                 try:
-                    TransDate = DT.datetime.strptime(TransDate, "%Y-%m-%d").date()
+                    TransDate = datetime.strptime(TransDate, "%Y-%m-%d").date()
                     if StartDate <= TransDate <= EndDate:
                         TransDateLst.append(TransDate)
                         break
@@ -749,7 +745,7 @@ while True:
     elif Choice == 3:
         pass
     elif Choice == 4:
-        CarRental()
+        CarRent()
     elif Choice == 5:
         EmployeePayment()
     elif Choice == 6:
