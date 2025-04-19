@@ -216,10 +216,11 @@ document.addEventListener("DOMContentLoaded", function () {
  
   const quotes = [
     "Road work ahead? Uh, yeah I sure hope it does.",
-    "Life is a highway.",
+    "Life is a highway, I wanna ride it.",
     "Keep on truckin'!",
     "They see me rollin', they hatin'.",
-    "The highway's callin', I gotta go."
+    "The highway's callin', I gotta go.",
+    "Nothing good starts in a getaway car."
   ];
  
   const randQuote = quotes[Math.floor(Math.random() * quotes.length)];
@@ -234,4 +235,39 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("quote").textContent = `"${randQuote}"`;
   document.getElementById("date").textContent = formattedDate;
  });
- 
+
+
+ document.addEventListener("DOMContentLoaded", function () {
+  const tellMeStoryBtn = document.getElementById("tellStoryBtn");
+  const madLibsForm = document.getElementById("madLibsForm");
+  const generateStoryBtn = document.getElementById("generateStoryBtn");
+  const storyBox = document.getElementById("madLibStory");
+
+  // Show the form when "Tell Me a Story" button is clicked
+  tellMeStoryBtn.addEventListener("click", function () {
+    madLibsForm.style.display = "block";
+    tellMeStoryBtn.style.display = "none";
+  });
+
+  // Generate a random Mad Libs story on button click
+  generateStoryBtn.addEventListener("click", function () {
+    const name = document.getElementById("nameInput").value || "Name";
+    const place = document.getElementById("placeInput").value || "Place";
+    const verbOne = document.getElementById("verbOneInput").value || "ran";
+    const verbTwo = document.getElementById("verbTwoInput").value || "zoomed";
+    const adjectiveOne = document.getElementById("adjectiveOneInput").value || "wild";
+    const adjectiveTwo = document.getElementById("adjectiveTwoInput").value || "exciting";
+
+    const stories = [
+      `${name} had the desire to go somewhere new… ${place}! ${name} ${verbOne} into the ${adjectiveOne} HAB Cab and ${verbTwo} the road. What a(n) ${adjectiveTwo} trip!`,
+      `One ${adjectiveOne} night, ${name} had a ${adjectiveTwo} dream… they ${verbOne} into a HAB Cab headed to ${place}. It was magical! They ${verbTwo} with joy!`,
+      `${name} took their ${adjectiveOne} HAB Cab and ${verbOne} across ${place}. Every mile was more ${adjectiveTwo} than the last. Eventually, they ${verbTwo} into the sunset.`
+    ];
+
+    const randomIndex = Math.floor(Math.random() * stories.length);
+    const story = stories[randomIndex];
+
+    storyBox.textContent = story;
+    storyBox.style.display = "block";
+  });
+});
