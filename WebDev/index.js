@@ -249,14 +249,14 @@ document.addEventListener("DOMContentLoaded", function () {
     tellMeStoryBtn.style.display = "none";
   });
 
-  // Generate a random Mad Libs story on button click
+  // Generate a random mad libs story on button click
   generateStoryBtn.addEventListener("click", function () {
     const name = document.getElementById("nameInput").value || "Name";
     const place = document.getElementById("placeInput").value || "Place";
-    const verbOne = document.getElementById("verbOneInput").value || "ran";
-    const verbTwo = document.getElementById("verbTwoInput").value || "zoomed";
-    const adjectiveOne = document.getElementById("adjectiveOneInput").value || "wild";
-    const adjectiveTwo = document.getElementById("adjectiveTwoInput").value || "exciting";
+    const verbOne = document.getElementById("verbOneInput").value || "Verb";
+    const verbTwo = document.getElementById("verbTwoInput").value || "Verb";
+    const adjectiveOne = document.getElementById("adjectiveOneInput").value || "Adjective";
+    const adjectiveTwo = document.getElementById("adjectiveTwoInput").value || "Adjective";
   
     const stories = [
       `${name} had the desire to go somewhere new… ${place}! ${name} ${verbOne} into the ${adjectiveOne} HAB Cab and ${verbTwo} the road. What a(n) ${adjectiveTwo} trip!`,

@@ -108,7 +108,7 @@ main {
 .maintopleft {
   width: 490px;
   height: 300px;
-  background-color: cyan;
+  background-color: rgb(255, 210, 61);
   border: 1px solid black;
   padding: 10px;
   margin: 5px;
@@ -118,7 +118,7 @@ main {
 .mainright {
   width: 490px;
   height: 610px;
-  background-color: lightgray;
+  background-color: rgb(255, 210, 61);
   border: 1px solid black;
   padding: 10px;
   margin: 5px;
@@ -131,12 +131,15 @@ main {
   font-family: "Courier New";
 }
 
+
 .loantable .mainhead {
   text-align: center;
   font-size: 18pt;
-  background-color: lightblue;
+  color: rgb(255, 210, 61);
+  background-color: black;
   font-weight: 700;
 }
+
 
 .loantable .lefttext {
   text-align: left;
@@ -280,4 +283,8 @@ footer {
   color: rgb(0, 0, 0);
   margin: 0.5rem;
  }
- 
+
+.user-input {
+  color: green;
+  font-weight: bold;
+}
